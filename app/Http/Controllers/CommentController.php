@@ -47,11 +47,11 @@ class CommentController extends Controller
      */
     public function store(CommentRequest $request)
     {
-        $challenge = Challenge::findOrFail($request->challenge_id);
-        $comment = Comment::create([
+       // $challenge = Challenge::findOrFail($request->challenge_id);
+        Comment::create([
             'content' => $request->content,
             'user_id' => Auth::id(),
-            'challenge_id' => $challenge->id
+            'challenge_id' => $request->challenge_id
         ]);
 
         // if ($challenge->user_id != $comment->user_id) {
@@ -60,7 +60,7 @@ class CommentController extends Controller
         // }
 
 
-        return redirect()->back();
+        return  back()->with('success', 'comment is posted');
     }
 
     /**
@@ -80,9 +80,12 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Comment $comment)
+    public function edit(CommentRequest $comment,$id)
     {
-        //
+        Comment::where('id',$id)->update([
+            'content' => $comment->content
+        ]);
+        return  back()->with('success', 'comment is update');
     }
 
     /**
@@ -103,8 +106,9 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy($id)
     {
-        //
+        Comment::where('id',$id)->delete();
+        return  back()->with('success', 'comment is deleted');
     }
 }

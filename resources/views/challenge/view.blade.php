@@ -1,49 +1,10 @@
-@php use Carbon\Carbon @endphp
-
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
   <div class="row">
       <div class="col-md-12 col-md-offset-2">
-        <div class="card mb-4   border-dark" style="max-width: 100%;">
-            <div class="card-header bg-dark ">
-                <h5 class="text-white float-left">Challenge </h5>
-                @if($challenge->status == 'closed')
-                  <span class="badge badge-danger float-left">Closed</span>
-                @else
-                  <span class="badge badge-success float-left">Open</span>
-                @endif
-                <div class="form-group float-right">
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#edit{{$challenge->id}}">Edit</button>
-                    @include('challenge.modal/edit')
-                    <button type="button" class="btn btn-secondary btn-sm">Participate</button>
-                </div>
-            </div>
-            <div class="row no-gutters">
-              <div class="col-md-2">
-                <img src="{{asset('challenge2.png')}}" class="card-img" alt="...">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class=" card-title">Title : {{ $challenge->title }}</span>
-                  </h5>
-                  <p class="card-text">Description : {{$challenge->description }}.</p>
-                </div>
-                <div class="card-footer bg-transparent border-dark">
-                    <p class="card-text float-left ">@if (Carbon::now()->gte($challenge->deadline) )
-                        <small class=" badge badge-danger text">DeadLine :  {{ $challenge->deadline }}</small></p>
-                        @else
-                        <small class=" badge badge-success text">DeadLine :  {{ $challenge->deadline }}</small></p>
-                    @endif
-
-                    <p class="card-text float-right "><small class="text-muted">By {{ $challenge->organizer->name }} Updated : {{ $challenge->updated_at }}</p>
-
-                </div>
-              </div>
-            </div>
-          </div>
-
+        @include('challenge.includes/challenge_view')
         <h3>Comments</h3>
         @if (Auth::check())
           @include('includes.errors')
@@ -58,7 +19,7 @@
             </div>
           </form>
         @endif
-        @forelse ($challenge->comment_users as $comment)
+        @forelse ($challenge->comment_users()->orderBy('updated_at', 'DESC')->get() as $comment)
 
         <div class="card border-dark mb-4" style="max-width: 100%;">
             <div class="row no-gutters">
@@ -73,13 +34,15 @@
 
                 </div>
 
-                <div class="card-footer bg-transparent border-dark">
-                    <div class="form-group float-right" >
+                <div class="card-footer bg-transparent border-dark" style="margin-bottom: 2%">
                         @if (Auth::user()->id =$comment->id)
-                           <button type="button" class="btn btn-primary btn-sm">Edit</button>
-                           <button type="button" class="btn btn-danger btn-sm">Remove</button>
+                        <form action="{{route('comment.delete',$comment->pivot->id)}}"method="POST">
+                            @csrf
+                           <button type="submit" class="btn btn-danger btn-sm float-right">Remove</button>
+                        </form>
+                           <button type="button" class="btn btn-primary btn-sm float-right" style="margin-right: 1%" data-toggle="modal" data-target="#editComment{{$challenge->id}}">Edit</button>
+                           @include('challenge.modal.comment_edit')
                         @endif
-                    </div>
                 </div>
               </div>
             </div>

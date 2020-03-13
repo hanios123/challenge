@@ -7,6 +7,7 @@ use App\ChallengeUser;
 use App\Comment;
 use App\Http\Requests\ChallengeRequest;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,7 @@ class ChallengeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('organizer');
+        $this->middleware('organizer', ['except' => ['participate']]);
     }
     /**
      * Display a listing of the resource.
@@ -60,12 +61,28 @@ class ChallengeController extends Controller
 
     public function destroy($id)
     {
-        ChallengeUser::where('challenge_id', $id)->where('user_id', Auth::user()->id)->delete();
+        ChallengeUser::where('challenge_id', $id)->delete();
+        Comment::where('challenge_id', $id)->delete();
         Challenge::where('id', $id)->delete();
         return back()->with('success', 'challenge is removed');
     }
 
     public function participate($id){
-        return view('challenge.participate');
+        return view('challenge.participate',['challenge'=>Challenge::find($id)]);
+    }
+
+    public function filter(Request $request){
+        // if(isset($request->keyword) && $request->status == 'all' && !isset($request->startDate) && !isset($request->endDate) ){
+        //     Challenge::where('title','like','%'.$request->keyword.'%')->orWhere('description',$request->keyword)->paginate(10);
+        // }else if(isset($request->keyword) && $request->status !== 'all' && !isset($request->startDate) && !isset($request->endDate) ){
+        //     Challenge::where('title',$request->keyword)->orWhere('description',$request->keyword)->where('status',$request->status)->paginate(10);
+        // }else if(isset($request->keyword) && $request->status !== 'all' && isset($request->startDate) && !isset($request->endDate) ){
+
+        // }
+        // if($request->status == 'all' && isset($request->startDate) && isset($request->endDate) ){
+        //     Challenge::where('title',$request->keyword)->orWhere('description',$request->keyword)->whereBetween('deadline', [Carbon::parse($request->startDate), Carbon::parse($request->startDate)])->paginate(10);
+        // }else if($request->status == 'all' && isset($request->startDate) && isset($request->endDate)){
+
+        // }
     }
 }

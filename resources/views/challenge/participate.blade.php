@@ -4,14 +4,14 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             @include('includes.errors')
+            @include('challenge.includes/challenge_view')
             <div class="card">
                 <div class="card-header">Code Sample </div>
                 <div class="card-body">
-                    <form action="" method="POST">
+                    <form action="{{route('participant.store',$challenge->id)}}" method="POST">
+                    @csrf
                     <div class="form-group">
-                       <textarea id="code" name="code">
-
-                       </textarea>
+                       <textarea id="code" name="code"></textarea>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="form-control btn btn-dark btn-sm"> submit your Code </button>
@@ -27,14 +27,8 @@
 @section('after_js')
 <script>
     var myTextArea = document.getElementById('code');
-    {{--  CodeMirror(document.body, {
-        lineNumbers: true,
-        value: "function myScript(){return 100;}\n",
-        mode:  "javascript"
-      });  --}}
     CodeMirror.fromTextArea(myTextArea, {
         lineNumbers: true,
-        value: "function myScript(){return 100;}\n",
         mode:  "javascript"
       });
 </script>

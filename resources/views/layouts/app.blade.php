@@ -17,8 +17,52 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 
     <!-- Styles -->
+    <style>
+        .sidenav {
+          height: 100%;
+          width: 0;
+          position: fixed;
+          z-index: 1;
+          top: 0;
+          left: 0;
+          background-color: #343a40;
+          overflow-x: hidden;
+          padding-top: 60px;
+        }
+
+        .sidenav a {
+          padding: 8px 8px 8px 32px;
+          text-decoration: none;
+          font-size: 25px;
+          color: white;
+          display: block;
+        }
+
+        .sidenav a:hover {
+          color: #f1f1f1;
+        }
+
+        .sidenav .closebtn {
+          position: absolute;
+          top: 0;
+          right: 25px;
+          font-size: 36px;
+          margin-left: 50px;
+        }
+
+        #main {
+          padding: 16px;
+        }
+
+        @media screen and (max-height: 450px) {
+          .sidenav {padding-top: 15px;}
+          .sidenav a {font-size: 18px;}
+        }
+        </style>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('after_css')
 </head>
@@ -36,12 +80,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        @if (Auth::user()!==null)
-                           <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-                           <a class="nav-item nav-link" href="#">Features</a>
-                           <a class="nav-item nav-link" href="#">Pricing</a>
-                           <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                        @endif
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -81,6 +120,13 @@
                 </div>
             </div>
         </nav>
+
+        <div id="mySidenav" class="sidenav">
+            {{--  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>  --}}
+            <a href="{{route('home')}}">Home</a>
+            <a href="{{route('challenge.index')}}">Challenges</a>
+            <a href="{{route('user.index')}}">Users</a>
+        </div>
         @if(session()->has('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session()->get('success') }}.
@@ -110,6 +156,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/mode/css/css.min.js"></script>
 
     @yield('after_js')
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+          document.getElementById("app").style.marginLeft = "250px";
+        }
+
+        //function closeNav() {
+        //  document.getElementById("mySidenav").style.width = "0";
+//document.getElementById("app").style.marginLeft= "0";
+      //  }
+        openNav();
+    </script>
 </body>
 
 </html>

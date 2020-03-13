@@ -21,6 +21,7 @@ class CreateChallengeUserTable extends Migration
             $table->integer('rank')->default(0);
             $table->boolean('isWinner')->default(false);
             $table->text('description')->nullable();
+            $table->text('code')->nullable();
             $table->timestamps();
         });
     }

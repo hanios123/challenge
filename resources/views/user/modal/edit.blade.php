@@ -13,8 +13,8 @@
       <div class="modal-body">
             <div class="form-group">
                 <input type="hidden" value="{{$user->id}}" name="user_id">
-                <label for="title">Auth</label>
-                <select name="auth">
+                <label for="auth">Auth</label>
+                <select class="form-control" name="auth" id="auth">
                     <option @if ($user->auth == 'guest') selected @endif value="guest">Guest</option>
                     <option @if ($user->auth == 'participant') selected @endif value="participant">Participant</option>
                     <option @if ($user->auth == 'organizer') selected @endif value="organizer">Organizer</option>
