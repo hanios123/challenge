@@ -8,7 +8,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form role="form" method="POST" action="{{route('challenge.add')}}">
+      <form role="form" method="POST" action="{{route('challenge.store')}}">
         @csrf
       <div class="modal-body">
             <div class="form-group">

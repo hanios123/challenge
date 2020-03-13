@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -24,7 +25,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user.index',['users'=>User::latest()->paginate(10)]);
+        return view('user.index',['users'=>User::where('id','!=',Auth::user()->id)->latest()->paginate(10)]);
 
     }
 

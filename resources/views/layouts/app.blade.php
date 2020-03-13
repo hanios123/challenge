@@ -20,24 +20,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <style>
-        .float{
-            position:fixed;
-            width:60px;
-            height:60px;
-            bottom:40px;
-            right:40px;
-            background-color:#0C9;
-            color:#FFF;
-            border-radius:50px;
-            text-align:center;
-            box-shadow: 2px 2px 3px #999;
-        }
-
-        .my-float{
-            margin-top:22px;
-        }
-    </style>
+    @yield('after_css')
 </head>
 <body>
     <div id="app">
@@ -99,14 +82,20 @@
             </div>
         </nav>
         @if(session()->has('success'))
-        <div class="alert alert-success">
-            {{ session()->get('success') }}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session()->get('success') }}.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
 
         @if(session()->has('fail'))
-        <div class="alert alert-danger">
-            {{ session()->get('fail') }}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session()->get('fail') }}.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         <main class="py-4">

@@ -23,15 +23,19 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/challenges', 'ChallengeController@index')->name('challenge.index');
-Route::post('/challenge/add', 'ChallengeController@add')->name('challenge.add');
-Route::post('/challenge/edit', 'ChallengeController@update')->name('challenge.edit');
-Route::any('/challenge/details/{id}', 'ChallengeController@view')->name('challenge.view');
-Route::post('/challenge/comment', 'ChallengeController@create')->name('challenge.create');
+Route::post('/challenge/store', 'ChallengeController@store')->name('challenge.store');
+Route::post('/challenge/edit/{id}', 'ChallengeController@edit')->name('challenge.edit');
+Route::delete('/challenge/destory/{id}', 'ChallengeController@destroy')->name('challenge.destroy');
+Route::any('/challenge/view/{id}', 'ChallengeController@view')->name('challenge.view');
+Route::any('/challenge/{id}/participate', 'ChallengeController@participate')->name('challenge.participate');
+
 
 
 
 Route::get('/users', 'UserController@index')->name('user.index');
 Route::post('/user/edit', 'UserController@update')->name('user.edit');
+
+Route::resource('comments', 'CommentController');
 
 
 

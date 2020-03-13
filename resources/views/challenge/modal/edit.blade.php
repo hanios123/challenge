@@ -8,7 +8,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form role="form" method="POST" action="{{route('challenge.edit')}}">
+      <form role="form" method="POST" action="{{route('challenge.edit',$challenge->id)}}">
         @csrf
       <div class="modal-body">
             <div class="form-group">
@@ -26,7 +26,13 @@
                 @endphp
                 <input type="datetime-local" class="form-control" id="deadline" name="deadline" placeholder="Dead Line" value="{{$newDate}}"  required>
             </div>
-
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" name="status" id="status">
+                    <option value="ongoing" @if($challenge->status == 'ongoing') selected @endif>Ongoing</option>
+                    <option value="closed" @if($challenge->status == 'closed') selected @endif>Closed</option>
+                </select>
+            </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Challenge;
+use App\ChallengeUser;
 use App\Comment;
+use App\Http\Requests\ChallengeRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,10 +13,10 @@ use Illuminate\Support\Facades\Auth;
 class ChallengeController extends Controller
 {
 
-    public function __construct(Challenge $challenge)
+    public function __construct()
     {
         $this->middleware('auth');
-        $this->challenge = $challenge;
+        $this->middleware('organizer');
     }
     /**
      * Display a listing of the resource.
@@ -27,76 +29,43 @@ class ChallengeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request )
-    {
-        $challenge = Challenge::findOrFail($request->challege_id);
-        return $request->challege_id;
-        $comment = Comment::create([
-            'content' => $request->content,
-            'user_id' => Auth::id(),
-            'challenge_id' => $challenge->id
-        ]);
-
-        if ($challenge->user_id != $comment->user_id) {
-            $user = User::find($challenge->user_id);
-           // $user->notify(new NewCommentPost($comment));
-        }
-
-        return redirect()->route('challenge.show', $challenge->id);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ChallengeRequest $request)
     {
-      //  Challenge::crea
+          Challenge::create(['title'=>$request->title ,
+          'description'=>$request->description ,
+          'deadline'=>$request->deadline ,'title'=>$request->title,
+          'organizer_id'=>Auth::user()->id]);
+          return back()->with('success', 'challenge is created');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Challenge  $challenge
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Challenge $challenge)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Challenge  $challenge
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Challenge $challenge)
+    public function edit(ChallengeRequest $request,$id)
     {
-        //
+        Challenge::where('id',$id)->update(['title'=>$request->title ,
+        'description'=>$request->description ,
+        'deadline'=>$request->deadline ,'title'=>$request->title,'status'=>$request->status]);
+        return back()->with('success', 'challenge is updated');
     }
 
     public function view($id)
     {
         $challenge = Challenge::where('id', $id)->first();
-        return view('challenge.view',compact('challenge'));
+        return isset($challenge)? view('challenge.view',compact('challenge')):abort(404);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Challenge  $challenge
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        Challenge::where('id', $request->id)->delete();
-        return back()->with('positive', 'challenge is removed');
+        ChallengeUser::where('challenge_id', $id)->where('user_id', Auth::user()->id)->delete();
+        Challenge::where('id', $id)->delete();
+        return back()->with('success', 'challenge is removed');
+    }
+
+    public function participate($id){
+        return view('challenge.participate');
     }
 }

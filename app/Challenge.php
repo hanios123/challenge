@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Challenge extends Model
 {
+    protected $guarded;
+
+    protected $fillable = [
+        'title', 'description', 'deadline','status','organizer_id'
+    ];
 
     public function users()
     {
@@ -19,7 +24,7 @@ class Challenge extends Model
 
     public function comment_users()
     {
-        return $this->belongsToMany(User::class,'comments')->withPivot('content')->withTimestamps();
+        return $this->belongsToMany(User::class,'comments')->withPivot('id','content')->withTimestamps();
     }
 
 

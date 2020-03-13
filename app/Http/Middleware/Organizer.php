@@ -16,7 +16,7 @@ class Organizer
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->auth == 'organizer') {
+        if (Auth::user()->auth == 'organizer' || Auth::user()->auth == 'admin') {
             return $next($request);
         }
 

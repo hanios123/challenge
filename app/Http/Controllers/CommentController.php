@@ -34,22 +34,9 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        $challenge = Challenge::findOrFail($request->challege_id);
-        return $request->challege_id;
-        $comment = Comment::create([
-            'content' => $request->content,
-            'user_id' => Auth::id(),
-            'challenge_id' => $challenge->id
-        ]);
 
-        if ($challenge->user_id != $comment->user_id) {
-            $user = User::find($challenge->user_id);
-           // $user->notify(new NewCommentPost($comment));
-        }
-
-        return redirect()->route('challenge.show', $challenge->id);
     }
 
     /**
@@ -58,9 +45,22 @@ class CommentController extends Controller
      * @param  App\Http\Requests\CommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(CommentRequest $request)
     {
+        $challenge = Challenge::findOrFail($request->challenge_id);
+        $comment = Comment::create([
+            'content' => $request->content,
+            'user_id' => Auth::id(),
+            'challenge_id' => $challenge->id
+        ]);
 
+        // if ($challenge->user_id != $comment->user_id) {
+        //     $user = User::find($challenge->user_id);
+        //    // $user->notify(new NewCommentPost($comment));
+        // }
+
+
+        return redirect()->back();
     }
 
     /**

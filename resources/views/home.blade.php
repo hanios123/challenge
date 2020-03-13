@@ -141,24 +141,7 @@
 
         </div>
     </div>
-    <a href="#" class="float">
-        <i class="fa fa-plus my-float"></i>
-        </a>
 </div>
 @endsection
-@section('after_js')
-<script>
-    var myTextArea = document.getElementById('myTextArea');
-    CodeMirror(document.body, {
-        lineNumbers: true,
-        value: "function myScript(){return 100;}\n",
-        mode:  "javascript"
-      });
-    {{-- CodeMirror.fromTextArea(myTextArea, {
-        lineNumbers: true,
-        value: "function myScript(){return 100;}\n",
-        mode:  "javascript"
-      }); --}}
-</script>
-@endsection
+
 

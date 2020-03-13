@@ -1,8 +1,9 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-9">
+        <div class="col-md-12">
+            @include('includes.errors')
             <div class="card">
                 <div class="card-header">Users </div>
                 <div class="card-body">
@@ -32,7 +33,7 @@
                               </tr>
                             @empty
                               <tr>
-                                <td colspan="4" >No Users yet</td>
+                                <td colspan="4" >No users to display</td>
                               </tr>
                             @endforelse
                         </tbody>
