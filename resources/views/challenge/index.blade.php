@@ -10,8 +10,10 @@
                     <input class="form-control float-left" style="width: 50%;margin-left: 3%" id="myInput" type="text" placeholder="Search..">
 
                     <div class="float-right">
+                        @if(Auth::user()->auth=='organizer')
                         <button type="button" class="btn btn-sm btn-primary float-right"  data-toggle="modal" data-target="#add">New challenge</button>
                         @include('challenge.modal.add')
+                        @endif
                         <button type="button" class="btn btn-sm btn-dark float-right"  data-toggle="modal" data-target="#filter">Filter</button>
                         @include('challenge.modal.filter')
                     </div>
@@ -43,12 +45,14 @@
                                 <td>{{$challenge->deadline}}</td>
                                 <td>
                                     <a href="{{route('challenge.view',$challenge->id)}}" class="btn btn-primary btn-sm">Details</a>
+                                    @if(Auth::user()->auth=='organizer')
                                     <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit{{$challenge->id}}">Edit</button>
                                     @include('challenge.modal.edit')
                                     <form action="{{route('challenge.destroy',$challenge->id)}}"  method="POST">
                                         @csrf
                                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
                                     </form>
+                                    @endif
 
                                 </td>
                               </tr>

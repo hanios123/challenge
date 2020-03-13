@@ -18,8 +18,8 @@ class ChallengeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('organizer', ['except' => ['participate','filter']]);
         $this->middleware('participant', ['except' => ['store','edit','destroy']]);
+       // $this->middleware('organizer', ['except' => ['participate','filter']]);
     }
     /**
      * Display a listing of the resource.

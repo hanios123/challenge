@@ -13,7 +13,7 @@
             @include('challenge.modal/edit')
             @endif
             @if( \Request::route()->getName() != 'challenge.participate')
-                @if($challenge->users()->find(Auth::user()->id)!==null)
+                @if($challenge->users()->find(Auth::user()->id)!==null || Carbon::now()->gte($challenge->deadline) )
                   <button  disabled class="btn btn-secondary btn-sm">Participate</button>
                 @elseif($challenge->organizer->id != Auth::user()->id || Auth::user()->auth == 'admin' || Auth::user()->auth == 'participant')
                   <a href="{{route('challenge.participate',$challenge->id)}}" class="btn btn-secondary btn-sm">Participate</a>
