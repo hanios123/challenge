@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class ParticipantController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('organizer');
+        $this->middleware('participant', ['except' => ['winner']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,17 +23,19 @@ class ParticipantController extends Controller
      */
     public function index($id)
     {
-        return view('participant.index',['participants'=>Challenge::find($id)->users()->paginate(10)]);
+        return view('participant.index',['participants'=>(Challenge::find($id)!=null?Challenge::find($id)->users()->paginate(10):collect())]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+
+    public function winner(Request $request,$id){
+        $request->validate([
+            'rank' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
+        ChallengeUser::where('id',$id)->update(['rank'=>$request->rank,'title'=>$request->title,'description'=>$request->description,'isWinner'=>true]);
+        return back()->with('success','winner is update');
     }
 
     /**
@@ -52,7 +61,8 @@ class ParticipantController extends Controller
      */
     public function show($id)
     {
-        //
+        $code = ChallengeUser::find($id)->code;
+        return view('participant.code_view',compact('code'));
     }
 
     /**

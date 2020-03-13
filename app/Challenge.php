@@ -14,7 +14,7 @@ class Challenge extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class)->withPivot('title', 'rank','isWinner','description','code')->withTimestamps();
+        return $this->belongsToMany(User::class)->withPivot('id','title', 'rank','isWinner','description','code')->withTimestamps();
     }
 
     public function organizer()

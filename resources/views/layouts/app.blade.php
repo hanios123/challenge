@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Tech Challenge Dashboard</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -71,7 +71,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                   Tech Challenge Dashboard
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -120,13 +120,14 @@
                 </div>
             </div>
         </nav>
-
+        @if (Auth::check())
         <div id="mySidenav" class="sidenav">
             {{--  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>  --}}
             <a href="{{route('home')}}">Home</a>
             <a href="{{route('challenge.index')}}">Challenges</a>
             <a href="{{route('user.index')}}">Users</a>
         </div>
+        @endif
         @if(session()->has('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session()->get('success') }}.

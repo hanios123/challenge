@@ -28,10 +28,15 @@ Route::post('/challenge/edit/{id}', 'ChallengeController@edit')->name('challenge
 Route::post('/challenge/{id}/destory', 'ChallengeController@destroy')->name('challenge.destroy');
 Route::any('/challenge/view/{id}', 'ChallengeController@view')->name('challenge.view');
 Route::any('/challenge/{id}/participate', 'ChallengeController@participate')->name('challenge.participate');
+Route::get('/challenge/filter', 'ChallengeController@filter')->name('challenge.filter');
 
 
-Route::any('/challenge/{id}/participants', 'ParticipantController@index')->name('participant.index');
-Route::any('/challenge/{id}/submitcode', 'ParticipantController@store')->name('participant.store');
+
+Route::get('/challenge/{id}/participants', 'ParticipantController@index')->name('participant.index');
+Route::post('/challenge/{id}/submitcode', 'ParticipantController@store')->name('participant.store');
+Route::post('/participant/{id}/winner', 'ParticipantController@winner')->name('participant.winner');
+Route::any('/participant/{id}/code', 'ParticipantController@show')->name('participant.code');
+
 
 
 Route::post('/comment/{id}/edit', 'CommentController@edit')->name('comment.edit');

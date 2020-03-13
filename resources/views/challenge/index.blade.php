@@ -7,6 +7,8 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="float-left">Challenges</h5>
+                    <input class="form-control float-left" style="width: 50%;margin-left: 3%" id="myInput" type="text" placeholder="Search..">
+
                     <div class="float-right">
                         <button type="button" class="btn btn-sm btn-primary float-right"  data-toggle="modal" data-target="#add">New challenge</button>
                         @include('challenge.modal.add')
@@ -15,7 +17,6 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <input class="form-control" id="myInput" type="text" placeholder="Search..">
                     <table class="table">
                         <thead class="bg-dark text-white">
                           <tr>

@@ -28,6 +28,6 @@ class HomeController extends Controller
     {
     //    $challenge = Challenge::find(1)->comment_users;
     //    return $challenge;
-       return view('home');
+       return view('home',['challenges'=>Challenge::all()]);
     }
 }

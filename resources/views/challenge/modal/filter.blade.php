@@ -8,13 +8,9 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form role="form" method="POST" action="{{route('challenge.store')}}">
+      <form role="form" method="GET" action="{{route('challenge.filter')}}">
         @csrf
       <div class="modal-body">
-            <div class="form-group">
-                <label for="title">KeyWord</label>
-                <input type="text" class="form-control" name="keyword" id="keyword" placeholder="KeyWord" >
-            </div>
             <div class="form-group">
                 <label for="status">Status</label>
                 <select class="form-control" id="status" name="status" >

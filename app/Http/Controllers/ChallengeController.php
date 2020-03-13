@@ -10,6 +10,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class ChallengeController extends Controller
 {
@@ -17,7 +18,8 @@ class ChallengeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('organizer', ['except' => ['participate']]);
+        $this->middleware('organizer', ['except' => ['participate','filter']]);
+        $this->middleware('participant', ['except' => ['store','edit','destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -72,17 +74,13 @@ class ChallengeController extends Controller
     }
 
     public function filter(Request $request){
-        // if(isset($request->keyword) && $request->status == 'all' && !isset($request->startDate) && !isset($request->endDate) ){
-        //     Challenge::where('title','like','%'.$request->keyword.'%')->orWhere('description',$request->keyword)->paginate(10);
-        // }else if(isset($request->keyword) && $request->status !== 'all' && !isset($request->startDate) && !isset($request->endDate) ){
-        //     Challenge::where('title',$request->keyword)->orWhere('description',$request->keyword)->where('status',$request->status)->paginate(10);
-        // }else if(isset($request->keyword) && $request->status !== 'all' && isset($request->startDate) && !isset($request->endDate) ){
-
-        // }
-        // if($request->status == 'all' && isset($request->startDate) && isset($request->endDate) ){
-        //     Challenge::where('title',$request->keyword)->orWhere('description',$request->keyword)->whereBetween('deadline', [Carbon::parse($request->startDate), Carbon::parse($request->startDate)])->paginate(10);
-        // }else if($request->status == 'all' && isset($request->startDate) && isset($request->endDate)){
-
-        // }
+        if($request->status !== 'all' && !isset($request->startDate) && !isset($request->endDate) ){
+            $challenges = Challenge::where('status',$request->status)->paginate(10);
+        }else if($request->status !== 'all' && isset($request->startDate) && !isset($request->endDate) ){
+            $challenges = Challenge::where('status',$request->status)->whereBetween('deadline', [Carbon::parse($request->startDate), Carbon::parse($request->startDate)])->paginate(10);
+        }else{
+            $challenges =  Challenge::latest()->paginate(10);
+        }
+        return view('challenge.index',['challenges'=> $challenges]);
     }
 }

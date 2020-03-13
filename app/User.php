@@ -12,7 +12,7 @@ class User extends Authenticatable
 
     public function challenges()
     {
-        return $this->belongsToMany(Challenge::class)->withPivot('title', 'rank','isWinner','description','code')->withTimestamps();
+        return $this->belongsToMany(Challenge::class)->withPivot('id','title', 'rank','isWinner','description','code')->withTimestamps();
     }
 
     public function commented_challenges()
